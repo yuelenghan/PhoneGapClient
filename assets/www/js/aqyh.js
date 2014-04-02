@@ -7,7 +7,7 @@ var yhScroll, swScroll, rjScroll,
 
 var loading = false;
 
-var serverPath = "http://10.1.168.50:8080/DataService/";
+var serverPath = "http://192.168.1.105:8080/DataService/";
 
 // 初始化安全隐患页面
 function initAqyh() {
@@ -522,7 +522,7 @@ function loadYhScroll() {
             }
         },
         onScrollMove: function () {
-            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
             if (this.y > 5 && !pullDownEl.className.match('flip')) {
                 pullDownEl.className = 'flip';
                 pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
