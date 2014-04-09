@@ -20,6 +20,7 @@ function initYhLevel() {
                     selectStr += "<option value='" + data[i].infoid + "'>" + data[i].infoname + "</option>";
                 }
                 $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
             }
         },
         error: function () {
@@ -43,6 +44,7 @@ function initYhType() {
                     selectStr += "<option value='" + data[i].infoid + "'>" + data[i].infoname + "</option>";
                 }
                 $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
             }
         },
         error: function () {
@@ -85,6 +87,7 @@ function initYhzy() {
                     selectStr += "<option value='" + data[i].infoid + "'>" + data[i].infoname + "</option>";
                 }
                 $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
             }
         },
         error: function () {
@@ -119,10 +122,12 @@ function getYhBasis() {
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
                     selectStr += "<option value='" + data[i].yhId + "'>" + data[i].yhContent + "</option>";
-
                 }
                 $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
 
+                var selectText = select.find("option:selected").text();
+                $("#yhContent").val(selectText);
             } else {
                 alert("没有数据！");
             }
@@ -145,10 +150,9 @@ function getYhBasis() {
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
                     selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
-
                 }
                 $(selectStr).appendTo(select);
-
+                select.selectmenu('refresh', true);
             }
         },
         error: function () {
@@ -172,7 +176,30 @@ function getYhBasis() {
 
                 }
                 $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
 
+                $.ajax({
+                    url: serverPath + "yhEnter/zrr/deptId/" + select.val(),
+                    dataType: "jsonp",
+                    type: "post",
+                    jsonpCallback: "zrr",
+                    success: function (data) {
+                        if (data != undefined && data != null && data.length > 0) {
+                            var select = $("#zrrSelect");
+                            select.html("");
+                            var selectStr = "";
+                            for (var i = 0; i < data.length; i++) {
+                                selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
+
+                            }
+                            $(selectStr).appendTo(select);
+                            select.selectmenu('refresh', true);
+                        }
+                    },
+                    error: function () {
+                        alert("error!");
+                    }
+                });
             }
         },
         error: function () {
@@ -196,7 +223,7 @@ function getYhBasis() {
 
                 }
                 $(selectStr).appendTo(select);
-
+                select.selectmenu('refresh', true);
             }
         },
         error: function () {
@@ -276,11 +303,11 @@ function selectZrdw(selectVal) {
                 select.html("");
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].personId + "'>" + data[i].name + "</option>";
+                    selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
 
                 }
                 $(selectStr).appendTo(select);
-
+                select.selectmenu('refresh', true);
             }
         },
         error: function () {
@@ -307,7 +334,65 @@ function selectZgfs(selectVal) {
 
 function submitInfo() {
     if (confirm("确认提交？")) {
+        var yhyj = $("#yhBasisSelect").val();
+        var yhjb = $("#yhLevelSelect").val();
+        var yhlx = $("#yhTypeSelect").val();
+        var wxy = $("#hazardSelect").val();
+        var yhms = $("#yhContent").val();
+        var zrdw = $("#zrdwSelect").val();
+        var zrr = $("#zrrSelect").val();
+        var pcdd = $("#placeSelect").val();
+        var mxdd = $("#placeDetail").val();
+        var pcsj = $("#pcTime").val();
+        var pcbc = $("#pcbc").val();
+        var pcry = $("#pcPersonNumber").val();
+        var pclx = $("#pcType").val();
+        var yhzy = $("#yhzySelect").val();
+        var zgfs = $("#zgfs").val();
+        var zgqx = $("#zgqx").val();
+        var zgbc = $("#zgbcSelect").val();
 
+        if (yhms == undefined || yhms == null || yhms == "") {
+            alert("请填写隐患描述！");
+            return;
+        }
+        if (pcsj == undefined || pcsj == null || pcsj == "") {
+            alert("请填写排查时间！");
+            return;
+        }
+        if (pcry == undefined || pcry == null || pcry == "") {
+            alert("排查人员无法获取，请登录！");
+            return;
+        }
+
+        if (mxdd == undefined || mxdd == null || mxdd == "") {
+            mxdd = "null";
+        }
+        if (zgqx == undefined || zgqx == null || zgqx == "") {
+            zgqx = "null";
+        }
+
+
+        /* alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", wxy = " + wxy + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
+         + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
+         + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
+
+        $.ajax({
+            url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "insertInfo",
+            success: function (data) {
+                if (data == "success") {
+                    alert("录入成功！")
+                } else {
+                    alert("录入失败！");
+                }
+            },
+            error: function () {
+                alert("error!");
+            }
+        });
     }
 }
 
