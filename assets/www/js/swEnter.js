@@ -1,19 +1,19 @@
 /**
- * Created by Administrator on 2014/4/2.
+ * Created by Administrator on 2014/4/10.
  */
 
 var serverPath = "http://192.168.1.105:8080/DataService/";
 var mainDeptId;
 
-function initYhLevel() {
+function initSwLevel() {
     $.ajax({
-        url: serverPath + "baseInfo/41",
+        url: serverPath + "baseInfo/46",
         dataType: "jsonp",
         type: "post",
-        jsonpCallback: "yhLevel",
+        jsonpCallback: "swLevel",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhLevelSelect");
+                var select = $("#swLevelSelect");
                 select.html("");
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
@@ -29,15 +29,39 @@ function initYhLevel() {
     });
 }
 
-function initYhType() {
+function initSwType() {
     $.ajax({
-        url: serverPath + "baseInfo/1",
+        url: serverPath + "baseInfo/102",
         dataType: "jsonp",
         type: "post",
-        jsonpCallback: "yhType",
+        jsonpCallback: "swType",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhTypeSelect");
+                var select = $("#swTypeSelect");
+                select.html("");
+                var selectStr = "";
+                for (var i = 0; i < data.length; i++) {
+                    selectStr += "<option value='" + data[i].infoid + "'>" + data[i].infoname + "</option>";
+                }
+                $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
+            }
+        },
+        error: function () {
+            alert("error!");
+        }
+    });
+}
+
+function initSwPro() {
+    $.ajax({
+        url: serverPath + "baseInfo/106",
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "swPro",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                var select = $("#swProSelect");
                 select.html("");
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
@@ -55,7 +79,7 @@ function initYhType() {
 
 function initPcPerson() {
     $.ajax({
-        url: serverPath + "yhEnter/pcPerson",
+        url: serverPath + "swEnter/pcPerson",
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "pcPerson",
@@ -72,34 +96,7 @@ function initPcPerson() {
     });
 }
 
-function initYhzy() {
-    $.ajax({
-        url: serverPath + "baseInfo/116",
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhzy",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhzySelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].infoid + "'>" + data[i].infoname + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
-}
-
-/**
- * 根据输入的部门编码查询隐患依据、危险源、责任单位、排查地点
- */
-function getYhBasis() {
+function getSwBasis() {
     var deptNumber = $("#deptNumber").val();
 
     if (deptNumber == undefined || deptNumber == null || deptNumber == "") {
@@ -109,31 +106,31 @@ function getYhBasis() {
 
     mainDeptId = deptNumber;
 
-    // 查询隐患依据
+    // 查询三违依据
     $.ajax({
-        url: serverPath + "yhEnter/yhBasis/deptNumber/" + deptNumber,
+        url: serverPath + "swEnter/swBasis/deptNumber/" + deptNumber,
         dataType: "jsonp",
         type: "post",
-        jsonpCallback: "yhBasis",
+        jsonpCallback: "swBasis",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhBasisSelect");
+                var select = $("#swBasisSelect");
                 select.html("");
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].yhId + "'>" + data[i].yhContent + "</option>";
+                    selectStr += "<option value='" + data[i].swId + "'>" + data[i].swContent + "</option>";
                 }
                 $(selectStr).appendTo(select);
                 select.selectmenu('refresh', true);
 
                 $.ajax({
-                    url: serverPath + "yhEnter/yhBasisLevel/" + select.val(),
+                    url: serverPath + "swEnter/swBasisLevel/" + select.val(),
                     dataType: "jsonp",
                     type: "post",
-                    jsonpCallback: "yhBasisLevel",
+                    jsonpCallback: "swBasisLevel",
                     success: function (data) {
                         if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#yhLevelSelect");
+                            var select = $("#swLevelSelect");
                             select.val(data);
                             select.selectmenu('refresh', true);
                         }
@@ -144,13 +141,13 @@ function getYhBasis() {
                 });
 
                 $.ajax({
-                    url: serverPath + "yhEnter/yhBasisType/" + select.val(),
+                    url: serverPath + "swEnter/swBasisType/" + select.val(),
                     dataType: "jsonp",
                     type: "post",
-                    jsonpCallback: "yhBasisType",
+                    jsonpCallback: "swBasisType",
                     success: function (data) {
                         if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#yhTypeSelect");
+                            var select = $("#swTypeSelect");
                             select.val(data);
                             select.selectmenu('refresh', true);
                         }
@@ -161,7 +158,7 @@ function getYhBasis() {
                 });
 
                 $.ajax({
-                    url: serverPath + "yhEnter/basisHazard/" + select.val(),
+                    url: serverPath + "swEnter/basisHazard/" + select.val(),
                     dataType: "jsonp",
                     type: "post",
                     jsonpCallback: "basisHazard",
@@ -178,7 +175,7 @@ function getYhBasis() {
                 });
 
                 var selectText = select.find("option:selected").text();
-                $("#yhContent").val(selectText);
+                $("#swContent").val(selectText);
             } else {
                 alert("没有数据！");
             }
@@ -190,7 +187,7 @@ function getYhBasis() {
 
     // 查询危险源
     $.ajax({
-        url: serverPath + "yhEnter/hazard/deptNumber/" + deptNumber,
+        url: serverPath + "swEnter/hazard/deptNumber/" + deptNumber,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "hazard",
@@ -211,56 +208,9 @@ function getYhBasis() {
         }
     });
 
-    // 查询责任单位
-    $.ajax({
-        url: serverPath + "yhEnter/zrdw/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "zrdw",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#zrdwSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].deptNumber + "'>" + data[i].deptName + "</option>";
-
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-
-                $.ajax({
-                    url: serverPath + "yhEnter/zrr/deptId/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "zrr",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#zrrSelect");
-                            select.html("");
-                            var selectStr = "";
-                            for (var i = 0; i < data.length; i++) {
-                                selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
-
-                            }
-                            $(selectStr).appendTo(select);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
-
     // 查询排查地点
     $.ajax({
-        url: serverPath + "yhEnter/place/deptNumber/" + deptNumber,
+        url: serverPath + "swEnter/place/deptNumber/" + deptNumber,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "place",
@@ -287,13 +237,13 @@ function selectBasis(selectVal) {
 //    alert(selectVal.options[selectVal.selectedIndex].text);
     var selectText = selectVal.options[selectVal.selectedIndex].text;
     $.ajax({
-        url: serverPath + "yhEnter/yhBasisLevel/" + selectVal.value,
+        url: serverPath + "swEnter/swBasisLevel/" + selectVal.value,
         dataType: "jsonp",
         type: "post",
-        jsonpCallback: "yhBasisLevel",
+        jsonpCallback: "swBasisLevel",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhLevelSelect");
+                var select = $("#swLevelSelect");
                 select.val(data);
                 select.selectmenu('refresh', true);
             }
@@ -304,13 +254,13 @@ function selectBasis(selectVal) {
     });
 
     $.ajax({
-        url: serverPath + "yhEnter/yhBasisType/" + selectVal.value,
+        url: serverPath + "swEnter/swBasisType/" + selectVal.value,
         dataType: "jsonp",
         type: "post",
-        jsonpCallback: "yhBasisType",
+        jsonpCallback: "swBasisType",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhTypeSelect");
+                var select = $("#swTypeSelect");
                 select.val(data);
                 select.selectmenu('refresh', true);
             }
@@ -321,7 +271,7 @@ function selectBasis(selectVal) {
     });
 
     $.ajax({
-        url: serverPath + "yhEnter/basisHazard/" + selectVal.value,
+        url: serverPath + "swEnter/basisHazard/" + selectVal.value,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "basisHazard",
@@ -337,24 +287,32 @@ function selectBasis(selectVal) {
         }
     });
 
-    $("#yhContent").val(selectText);
+    $("#swContent").val(selectText);
 }
 
-function selectZrdw(selectVal) {
-//    alert(selectVal.value);
+function getSwry() {
+    var name = $("#querySwry").val();
+    if (name == undefined || name == null || name == "") {
+        alert("请输入人员姓名！")
+        return;
+    }
+
+    if (mainDeptId == undefined || mainDeptId == null || mainDeptId == "") {
+        alert("请先输入部门编码进行查询之后再录入三违数据！")
+    }
 
     $.ajax({
-        url: serverPath + "yhEnter/zrr/deptId/" + selectVal.value,
+        url: serverPath + "swEnter/person/" + mainDeptId + "/" + name,
         dataType: "jsonp",
         type: "post",
-        jsonpCallback: "zrr",
+        jsonpCallback: "person",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#zrrSelect");
+                var select = $("#swry");
                 select.html("");
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
+                    selectStr += "<option value='" + data[i].personnumber + "'>" + data[i].name + "</option>";
 
                 }
                 $(selectStr).appendTo(select);
@@ -367,44 +325,28 @@ function selectZrdw(selectVal) {
     });
 }
 
-function selectPcType(selectVal) {
-    if (selectVal.value == 4 || selectVal.value == 7) {
-        $("#yhzyDiv").show();
-    } else {
-        $("#yhzyDiv").hide();
-    }
-}
-
-function selectZgfs(selectVal) {
-    if (selectVal.value == "新增") {
-        $("#xqzgDiv").show();
-    } else {
-        $("#xqzgDiv").hide();
-    }
-}
-
 function submitInfo() {
     if (confirm("确认提交？")) {
-        var yhyj = $("#yhBasisSelect").val();
-        var yhjb = $("#yhLevelSelect").val();
-        var yhlx = $("#yhTypeSelect").val();
+        var swyj = $("#swBasisSelect").val();
+        var swxz = $("#swLevelSelect").val();
+        var swlx = $("#swTypeSelect").val();
+        var swzy = $("#swProSelect").val();
         var wxy = $("#hazardSelect").val();
-        var yhms = $("#yhContent").val();
-        var zrdw = $("#zrdwSelect").val();
-        var zrr = $("#zrrSelect").val();
+        var swms = $("#swContent").val();
+        var swry = $("#swry").val();
+        var pcry = $("#pcPersonNumber").val();
         var pcdd = $("#placeSelect").val();
         var mxdd = $("#placeDetail").val();
         var pcsj = $("#pcTime").val();
         var pcbc = $("#pcbc").val();
-        var pcry = $("#pcPersonNumber").val();
-        var pclx = $("#pcType").val();
-        var yhzy = $("#yhzySelect").val();
-        var zgfs = $("#zgfs").val();
-        var zgqx = $("#zgqx").val();
-        var zgbc = $("#zgbcSelect").val();
+        var jcfs = $("#jcType").val();
 
-        if (yhms == undefined || yhms == null || yhms == "") {
-            alert("请填写隐患描述！");
+        if (swms == undefined || swms == null || swms == "") {
+            alert("请填写三违描述！");
+            return;
+        }
+        if (swry == undefined || swry == null || swry == "") {
+            alert("请选择三违人员！");
             return;
         }
         if (pcsj == undefined || pcsj == null || pcsj == "") {
@@ -419,17 +361,12 @@ function submitInfo() {
         if (mxdd == undefined || mxdd == null || mxdd == "") {
             mxdd = "null";
         }
-        if (zgqx == undefined || zgqx == null || zgqx == "") {
-            zgqx = "null";
-        }
 
-
-        /* alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", wxy = " + wxy + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
-         + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
-         + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
+        /*        alert("swyj = " + swyj + ", swxz = " + swxz + ", swlx = " + swlx + ", swzy = " + swzy + ", wxy = " + wxy + ", swms = " + swms + ", swry = " + swry
+         + ", pcry = " + pcry + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", jcfs = " + jcfs);*/
 
         $.ajax({
-            url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
+            url: serverPath + "swEnter/insertInfo/" + swyj + "/" + swxz + "/" + swlx + "/" + swzy + "/" + wxy + "/" + swms + "/" + swry + "/" + pcry + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + jcfs + "/" + mainDeptId,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "insertInfo",
@@ -446,4 +383,3 @@ function submitInfo() {
         });
     }
 }
-
