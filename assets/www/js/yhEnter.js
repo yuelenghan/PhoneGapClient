@@ -447,3 +447,147 @@ function submitInfo() {
     }
 }
 
+function filterYhyj() {
+    var arg = $("#yhyjFilter").val();
+    if (arg == undefined || arg == null || arg == "") {
+        return;
+    }
+
+    $.ajax({
+        url: serverPath + "yhEnter/yhBasis/deptNumber/" + mainDeptId + "/" + arg,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "yhBasis",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                var select = $("#yhBasisSelect");
+                select.html("");
+                var selectStr = "";
+                for (var i = 0; i < data.length; i++) {
+                    selectStr += "<option value='" + data[i].yhId + "'>" + data[i].yhContent + "</option>";
+                }
+                $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
+
+                $.ajax({
+                    url: serverPath + "yhEnter/yhBasisLevel/" + select.val(),
+                    dataType: "jsonp",
+                    type: "post",
+                    jsonpCallback: "yhBasisLevel",
+                    success: function (data) {
+                        if (data != undefined && data != null && data.length > 0) {
+                            var select = $("#yhLevelSelect");
+                            select.val(data);
+                            select.selectmenu('refresh', true);
+                        }
+                    },
+                    error: function () {
+                        alert("error!");
+                    }
+                });
+
+                $.ajax({
+                    url: serverPath + "yhEnter/yhBasisType/" + select.val(),
+                    dataType: "jsonp",
+                    type: "post",
+                    jsonpCallback: "yhBasisType",
+                    success: function (data) {
+                        if (data != undefined && data != null && data.length > 0) {
+                            var select = $("#yhTypeSelect");
+                            select.val(data);
+                            select.selectmenu('refresh', true);
+                        }
+                    },
+                    error: function () {
+                        alert("error!");
+                    }
+                });
+
+                $.ajax({
+                    url: serverPath + "yhEnter/basisHazard/" + select.val(),
+                    dataType: "jsonp",
+                    type: "post",
+                    jsonpCallback: "basisHazard",
+                    success: function (data) {
+                        if (data != undefined && data != null && data.length > 0) {
+                            var select = $("#hazardSelect");
+                            select.val(data);
+                            select.selectmenu('refresh', true);
+                        }
+                    },
+                    error: function () {
+                        alert("error!");
+                    }
+                });
+
+                var selectText = select.find("option:selected").text();
+                $("#yhContent").val(selectText);
+            } else {
+                alert("没有数据！");
+            }
+        },
+        error: function () {
+            alert("error!");
+        }
+    });
+}
+
+function filterHazard() {
+    var arg = $("#hazardFilter").val();
+    if (arg == undefined || arg == null || arg == "") {
+        return;
+    }
+
+    $.ajax({
+        url: serverPath + "yhEnter/hazard/deptNumber/" + mainDeptId + "/" + arg,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "hazard",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                var select = $("#hazardSelect");
+                select.html("");
+                var selectStr = "";
+                for (var i = 0; i < data.length; i++) {
+                    selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
+                }
+                $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
+            }
+        },
+        error: function () {
+            alert("error!");
+        }
+    });
+}
+
+function filterPlace() {
+    var arg = $("#placeFilter").val();
+    if (arg == undefined || arg == null || arg == "") {
+        return;
+    }
+
+    $.ajax({
+        url: serverPath + "yhEnter/place/deptNumber/" + mainDeptId + "/" + arg,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "place",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                var select = $("#placeSelect");
+                select.html("");
+                var selectStr = "";
+                for (var i = 0; i < data.length; i++) {
+                    selectStr += "<option value='" + data[i].placeid + "'>" + data[i].placename + "</option>";
+
+                }
+                $(selectStr).appendTo(select);
+                select.selectmenu('refresh', true);
+            }
+        },
+        error: function () {
+            alert("error!");
+        }
+    });
+}
+
