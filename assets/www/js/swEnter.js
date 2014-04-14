@@ -1,10 +1,14 @@
 /**
+ * 三违录入js
  * Created by Administrator on 2014/4/10.
  */
 
 var serverPath = "http://192.168.1.105:8080/DataService/";
 var mainDeptId;
 
+/**
+ * 初始化三违性质
+ */
 function initSwLevel() {
     $.ajax({
         url: serverPath + "baseInfo/46",
@@ -29,6 +33,9 @@ function initSwLevel() {
     });
 }
 
+/**
+ * 初始化三违类型
+ */
 function initSwType() {
     $.ajax({
         url: serverPath + "baseInfo/102",
@@ -53,6 +60,9 @@ function initSwType() {
     });
 }
 
+/**
+ * 初始化三违专业
+ */
 function initSwPro() {
     $.ajax({
         url: serverPath + "baseInfo/106",
@@ -77,6 +87,9 @@ function initSwPro() {
     });
 }
 
+/**
+ * 初始化排查人员（登录人员）
+ */
 function initPcPerson() {
     $.ajax({
         url: serverPath + "swEnter/pcPerson",
@@ -96,6 +109,9 @@ function initPcPerson() {
     });
 }
 
+/**
+ * 根据输入的部门编码查询三违依据、危险源、排查地点
+ */
 function getSwBasis() {
     var deptNumber = $("#deptNumber").val();
 
@@ -123,6 +139,7 @@ function getSwBasis() {
                 $(selectStr).appendTo(select);
                 select.selectmenu('refresh', true);
 
+                // 根据选中的三违依据初始化三违性质
                 $.ajax({
                     url: serverPath + "swEnter/swBasisLevel/" + select.val(),
                     dataType: "jsonp",
@@ -140,6 +157,7 @@ function getSwBasis() {
                     }
                 });
 
+                // 根据选中的三违依据初始化三违类型
                 $.ajax({
                     url: serverPath + "swEnter/swBasisType/" + select.val(),
                     dataType: "jsonp",
@@ -157,6 +175,7 @@ function getSwBasis() {
                     }
                 });
 
+                // 根据选中的三违依据初始化危险源
                 $.ajax({
                     url: serverPath + "swEnter/basisHazard/" + select.val(),
                     dataType: "jsonp",
@@ -233,9 +252,15 @@ function getSwBasis() {
     });
 }
 
+/**
+ * 根据选中的三违依据初始化三违性质、三违类型、危险源
+ * @param selectVal 选中的三违依据
+ */
 function selectBasis(selectVal) {
 //    alert(selectVal.options[selectVal.selectedIndex].text);
     var selectText = selectVal.options[selectVal.selectedIndex].text;
+
+    // 初始化三违性质
     $.ajax({
         url: serverPath + "swEnter/swBasisLevel/" + selectVal.value,
         dataType: "jsonp",
@@ -253,6 +278,7 @@ function selectBasis(selectVal) {
         }
     });
 
+    // 初始化三违类型
     $.ajax({
         url: serverPath + "swEnter/swBasisType/" + selectVal.value,
         dataType: "jsonp",
@@ -270,6 +296,7 @@ function selectBasis(selectVal) {
         }
     });
 
+    // 初始化危险源
     $.ajax({
         url: serverPath + "swEnter/basisHazard/" + selectVal.value,
         dataType: "jsonp",
@@ -290,6 +317,9 @@ function selectBasis(selectVal) {
     $("#swContent").val(selectText);
 }
 
+/**
+ * 根据输入的过滤条件查询三违人员列表
+ */
 function getSwry() {
     var name = $("#querySwry").val();
     if (name == undefined || name == null || name == "") {
@@ -325,21 +355,24 @@ function getSwry() {
     });
 }
 
+/**
+ * 提交三违信息，插入数据库
+ */
 function submitInfo() {
     if (confirm("确认提交？")) {
-        var swyj = $("#swBasisSelect").val();
-        var swxz = $("#swLevelSelect").val();
-        var swlx = $("#swTypeSelect").val();
-        var swzy = $("#swProSelect").val();
-        var wxy = $("#hazardSelect").val();
-        var swms = $("#swContent").val();
-        var swry = $("#swry").val();
-        var pcry = $("#pcPersonNumber").val();
-        var pcdd = $("#placeSelect").val();
-        var mxdd = $("#placeDetail").val();
-        var pcsj = $("#pcTime").val();
-        var pcbc = $("#pcbc").val();
-        var jcfs = $("#jcType").val();
+        var swyj = $("#swBasisSelect").val();   // 三违依据
+        var swxz = $("#swLevelSelect").val();   // 三违性质
+        var swlx = $("#swTypeSelect").val();    // 三违类型
+        var swzy = $("#swProSelect").val();     // 三违专业
+        var wxy = $("#hazardSelect").val();     // 危险源
+        var swms = $("#swContent").val();       // 三违描述
+        var swry = $("#swry").val();            // 三违人员
+        var pcry = $("#pcPersonNumber").val();  // 排查人员
+        var pcdd = $("#placeSelect").val();     // 排查地点
+        var mxdd = $("#placeDetail").val();     // 明细地点
+        var pcsj = $("#pcTime").val();          // 排查时间
+        var pcbc = $("#pcbc").val();            // 排查班次
+        var jcfs = $("#jcType").val();          // 检查方式
 
         if (swms == undefined || swms == null || swms == "") {
             alert("请填写三违描述！");
@@ -384,7 +417,11 @@ function submitInfo() {
     }
 }
 
+/**
+ * 过滤三违依据
+ */
 function filterSwyj() {
+    // 过滤条件
     var arg = $("#swyjFilter").val();
     if (arg == undefined || arg == null || arg == "") {
         return;
@@ -406,6 +443,7 @@ function filterSwyj() {
                 $(selectStr).appendTo(select);
                 select.selectmenu('refresh', true);
 
+                // 根据选中的三违依据初始化三违性质
                 $.ajax({
                     url: serverPath + "swEnter/swBasisLevel/" + select.val(),
                     dataType: "jsonp",
@@ -423,6 +461,7 @@ function filterSwyj() {
                     }
                 });
 
+                // 根据选中的三违依据初始化三违类型
                 $.ajax({
                     url: serverPath + "swEnter/swBasisType/" + select.val(),
                     dataType: "jsonp",
@@ -440,6 +479,7 @@ function filterSwyj() {
                     }
                 });
 
+                // 根据选中的三违依据初始化危险源
                 $.ajax({
                     url: serverPath + "swEnter/basisHazard/" + select.val(),
                     dataType: "jsonp",
@@ -469,7 +509,11 @@ function filterSwyj() {
     });
 }
 
+/**
+ * 过滤危险源
+ */
 function filterHazard() {
+    // 过滤条件
     var arg = $("#hazardFilter").val();
     if (arg == undefined || arg == null || arg == "") {
         return;
@@ -498,7 +542,11 @@ function filterHazard() {
     });
 }
 
+/**
+ * 过滤地点
+ */
 function filterPlace() {
+    // 过滤条件
     var arg = $("#placeFilter").val();
     if (arg == undefined || arg == null || arg == "") {
         return;
