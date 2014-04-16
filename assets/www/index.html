@@ -12,6 +12,19 @@
     <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
     <script src="js/login.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var userName = window.localStorage.getItem("userName");
+            var password = window.localStorage.getItem("password");
+            if (userName != undefined && userName != null && userName != "") {
+                $("#userName").val(userName);
+            }
+            if (password != undefined && password != null && password != "") {
+                $("#password").val(password);
+            }
+        });
+    </script>
 </head>
 <body>
 <div data-role="page">
@@ -25,9 +38,20 @@
         <label for="password">密码：</label>
         <input type="password" id="password" placeholder="请输入密码">
 
+        <input type="checkbox" data-mini="true" id="rememberMe">
+        <label for="rememberMe">记住我</label>
+
+        <script type="text/javascript">
+            if (window.localStorage.getItem("flag") == "true") {
+                $("#rememberMe").attr('checked', true);
+            } else {
+                $("#rememberMe").attr('checked', false);
+            }
+        </script>
+
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
            onclick="login()">登录</a>
     </div>
-    </div>
+</div>
 </body>
 </html>

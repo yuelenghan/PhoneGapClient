@@ -11,7 +11,8 @@ var serverPath = "http://192.168.1.105:8080/DataService/";
 function login() {
     var userName = $("#userName").val();
     var password = $("#password").val();
-//    alert("userName = " + userName + ", password = " + password);
+    var flag = $("#rememberMe").is(':checked');
+//    alert("userName = " + userName + ", password = " + password +", flag = " + flag);
 
     if (userName == undefined || userName == null || userName == "") {
         alert("请输入用户名!");
@@ -21,6 +22,18 @@ function login() {
     if (password == undefined || password == null || password == "") {
         alert("请输入密码!");
         return;
+    }
+
+    var localStorage = window.localStorage;
+    localStorage.setItem("flag", flag);
+    if (flag) {
+        // 记住用户
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("password", password);
+    } else {
+        // 清除用户
+        localStorage.removeItem("userName");
+        localStorage.removeItem("password");
     }
 
     $.ajax({
@@ -40,3 +53,4 @@ function login() {
         }
     });
 }
+
