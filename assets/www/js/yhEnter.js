@@ -554,6 +554,8 @@ function submitInfo() {
                     loading = false;
                 },
                 error: function () {
+                    $.mobile.loading("hide");
+                    loading = false;
                     alert("error!");
                 }
             });
