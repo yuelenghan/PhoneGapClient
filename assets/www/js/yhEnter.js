@@ -36,7 +36,13 @@ function initYhLevel() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -71,7 +77,13 @@ function initYhType() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -116,7 +128,13 @@ function initPcPerson() {
                             }
                         },
                         error: function () {
-                            alert("error!");
+//                            alert("error!");
+                            $().toastmessage('showToast', {
+                                text: '访问服务器错误！',
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'error'
+                            });
                         }
                     });
                 } else {
@@ -130,7 +148,13 @@ function initPcPerson() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -157,7 +181,13 @@ function initYhzy() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -174,181 +204,181 @@ function initYhzy() {
  }*//*
 
  // 查询隐患依据
-    $.ajax({
-        url: serverPath + "yhEnter/yhBasis/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhBasis",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhBasisSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].yhId + "'>" + data[i].yhContent + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
+ $.ajax({
+ url: serverPath + "yhEnter/yhBasis/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "yhBasis",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#yhBasisSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].yhId + "'>" + data[i].yhContent + "</option>";
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
 
-                // 根据选中的隐患依据，初始化隐患级别
-                $.ajax({
-                    url: serverPath + "yhEnter/yhBasisLevel/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "yhBasisLevel",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#yhLevelSelect");
-                            select.val(data);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
+ // 根据选中的隐患依据，初始化隐患级别
+ $.ajax({
+ url: serverPath + "yhEnter/yhBasisLevel/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "yhBasisLevel",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#yhLevelSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-                // 根据选中的隐患依据，初始化隐患类型
-                $.ajax({
-                    url: serverPath + "yhEnter/yhBasisType/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "yhBasisType",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#yhTypeSelect");
-                            select.val(data);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
+ // 根据选中的隐患依据，初始化隐患类型
+ $.ajax({
+ url: serverPath + "yhEnter/yhBasisType/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "yhBasisType",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#yhTypeSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-                // 根据选中的隐患依据，初始化危险源
-                $.ajax({
-                    url: serverPath + "yhEnter/basisHazard/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "basisHazard",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#hazardSelect");
-                            select.val(data);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
+ // 根据选中的隐患依据，初始化危险源
+ $.ajax({
+ url: serverPath + "yhEnter/basisHazard/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "basisHazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-                var selectText = select.find("option:selected").text();
-                $("#yhContent").val(selectText);
-            } else {
+ var selectText = select.find("option:selected").text();
+ $("#yhContent").val(selectText);
+ } else {
  alert("没有隐患依据数据！");
  }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 查询危险源
-    $.ajax({
-        url: serverPath + "yhEnter/hazard/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "hazard",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#hazardSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 查询危险源
+ $.ajax({
+ url: serverPath + "yhEnter/hazard/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "hazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 查询责任单位
-    $.ajax({
-        url: serverPath + "yhEnter/zrdw/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "zrdw",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#zrdwSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].deptNumber + "'>" + data[i].deptName + "</option>";
+ // 查询责任单位
+ $.ajax({
+ url: serverPath + "yhEnter/zrdw/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "zrdw",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#zrdwSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].deptNumber + "'>" + data[i].deptName + "</option>";
 
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
 
-                // 根据选中的责任单位初始化责任人
-                $.ajax({
-                    url: serverPath + "yhEnter/zrr/deptId/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "zrr",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#zrrSelect");
-                            select.html("");
-                            var selectStr = "";
-                            for (var i = 0; i < data.length; i++) {
-                                selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
+ // 根据选中的责任单位初始化责任人
+ $.ajax({
+ url: serverPath + "yhEnter/zrr/deptId/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "zrr",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#zrrSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
 
-                            }
-                            $(selectStr).appendTo(select);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 查询排查地点
-    $.ajax({
-        url: serverPath + "yhEnter/place/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "place",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#placeSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].placeid + "'>" + data[i].placename + "</option>";
+ // 查询排查地点
+ $.ajax({
+ url: serverPath + "yhEnter/place/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "place",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#placeSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].placeid + "'>" + data[i].placename + "</option>";
 
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
  }*/
 
 /**
@@ -357,63 +387,63 @@ function initYhzy() {
  */
 /*function selectBasis(selectVal) {
  //    alert(selectVal.options[selectVal.selectedIndex].text);
-    var selectText = selectVal.options[selectVal.selectedIndex].text;
+ var selectText = selectVal.options[selectVal.selectedIndex].text;
 
-    // 初始化隐患级别
-    $.ajax({
-        url: serverPath + "yhEnter/yhBasisLevel/" + selectVal.value,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhBasisLevel",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhLevelSelect");
-                select.val(data);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 初始化隐患级别
+ $.ajax({
+ url: serverPath + "yhEnter/yhBasisLevel/" + selectVal.value,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "yhBasisLevel",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#yhLevelSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 初始化隐患类型
-    $.ajax({
-        url: serverPath + "yhEnter/yhBasisType/" + selectVal.value,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhBasisType",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#yhTypeSelect");
-                select.val(data);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 初始化隐患类型
+ $.ajax({
+ url: serverPath + "yhEnter/yhBasisType/" + selectVal.value,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "yhBasisType",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#yhTypeSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 初始化危险源
-    $.ajax({
-        url: serverPath + "yhEnter/basisHazard/" + selectVal.value,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "basisHazard",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#hazardSelect");
-                select.val(data);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 初始化危险源
+ $.ajax({
+ url: serverPath + "yhEnter/basisHazard/" + selectVal.value,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "basisHazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    $("#yhContent").val(selectText);
+ $("#yhContent").val(selectText);
  }*/
 
 /**
@@ -443,7 +473,13 @@ function selectZrdw(selectVal) {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -545,9 +581,21 @@ function submitInfo() {
                 jsonpCallback: "insertInfo",
                 success: function (data) {
                     if (data == "success") {
-                        alert("录入成功！")
+//                        alert("录入成功！")
+                        $().toastmessage('showToast', {
+                            text: '录入成功！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'success'
+                        });
                     } else {
-                        alert("录入失败！");
+//                        alert("录入失败！");
+                        $().toastmessage('showToast', {
+                            text: '录入失败！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'error'
+                        });
                     }
 
                     $.mobile.loading("hide");
@@ -556,7 +604,13 @@ function submitInfo() {
                 error: function () {
                     $.mobile.loading("hide");
                     loading = false;
-                    alert("error!");
+//                    alert("error!");
+                    $().toastmessage('showToast', {
+                        text: '访问服务器错误！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
                 }
             });
         }
@@ -607,7 +661,13 @@ function filterYhyj() {
                     select.selectmenu('refresh', true);
 
                 } else {
-                    alert("没有隐患依据数据！");
+//                    alert("没有隐患依据数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有隐患依据数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -616,8 +676,13 @@ function filterYhyj() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
-
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -628,35 +693,35 @@ function filterYhyj() {
  */
 /*function filterHazard() {
  // 过滤条件
-    var arg = $("#hazardFilter").val();
-    if (arg == undefined || arg == null || arg == "") {
-        return;
-    }
+ var arg = $("#hazardFilter").val();
+ if (arg == undefined || arg == null || arg == "") {
+ return;
+ }
 
-    $.ajax({
-        url: serverPath + "yhEnter/hazard/deptNumber/" + mainDeptId + "/" + arg,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "hazard",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#hazardSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
+ $.ajax({
+ url: serverPath + "yhEnter/hazard/deptNumber/" + mainDeptId + "/" + arg,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "hazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
  $.mobile.loading("hide");
  loading = false;
  alert("error!");
 
  }
-    });
+ });
  }*/
 
 /**
@@ -697,7 +762,13 @@ function filterPlace() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -735,7 +806,13 @@ function returnYhyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -753,7 +830,13 @@ function returnYhyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -771,7 +854,13 @@ function returnYhyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -812,7 +901,13 @@ function filterWxy() {
                     select.selectmenu('refresh', true);
 
                 } else {
-                    alert("没有危险源数据！");
+//                    alert("没有危险源数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有危险源数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -821,8 +916,13 @@ function filterWxy() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
-
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -899,20 +999,38 @@ function zrdwFilter() {
                         error: function () {
                             $.mobile.loading("hide");
                             loading = false;
-                            alert("error!");
+//                            alert("error!");
+                            $().toastmessage('showToast', {
+                                text: '访问服务器错误！',
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'error'
+                            });
                         }
 
                     });
                 } else {
                     $.mobile.loading("hide");
                     loading = false;
-                    alert("没有责任单位数据！");
+//                    alert("没有责任单位数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有责任单位数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
             },
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -946,7 +1064,13 @@ function zrrFilter() {
                     $(selectStr).appendTo(select);
                     select.selectmenu('refresh', true);
                 } else {
-                    alert("没有责任人数据！");
+//                    alert("没有责任人数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有责任人数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -955,7 +1079,13 @@ function zrrFilter() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }

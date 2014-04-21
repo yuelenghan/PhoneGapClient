@@ -173,13 +173,25 @@ function initDeptList() {
             } else {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("没有部门数据！");
+//                alert("没有部门数据！");
+                $().toastmessage('showToast', {
+                    text: '没有部门数据！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'warning'
+                });
             }
         },
         error: function () {
             $.mobile.loading("hide");
             loading = false;
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -187,248 +199,215 @@ function initDeptList() {
 /**
  * 根据输入的部门编码查询三违依据、危险源、排查地点
  */
-function getSwBasis() {
-    var deptNumber = $("#deptNumber").val();
+/*function getSwBasis() {
+ var deptNumber = $("#deptNumber").val();
 
-    if (deptNumber == undefined || deptNumber == null || deptNumber == "") {
-        alert("请输入部门编码！");
-        return;
-    }
+ if (deptNumber == undefined || deptNumber == null || deptNumber == "") {
+ alert("请输入部门编码！");
+ return;
+ }
 
-    mainDeptId = deptNumber;
+ mainDeptId = deptNumber;
 
-    // 查询三违依据
-    $.ajax({
-        url: serverPath + "swEnter/swBasis/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "swBasis",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#swBasisSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].swId + "'>" + data[i].swContent + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
+ // 查询三违依据
+ $.ajax({
+ url: serverPath + "swEnter/swBasis/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "swBasis",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#swBasisSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].swId + "'>" + data[i].swContent + "</option>";
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
 
-                // 根据选中的三违依据初始化三违性质
-                $.ajax({
-                    url: serverPath + "swEnter/swBasisLevel/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "swBasisLevel",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#swLevelSelect");
-                            select.val(data);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
+ // 根据选中的三违依据初始化三违性质
+ $.ajax({
+ url: serverPath + "swEnter/swBasisLevel/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "swBasisLevel",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#swLevelSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-                // 根据选中的三违依据初始化三违类型
-                $.ajax({
-                    url: serverPath + "swEnter/swBasisType/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "swBasisType",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#swTypeSelect");
-                            select.val(data);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
+ // 根据选中的三违依据初始化三违类型
+ $.ajax({
+ url: serverPath + "swEnter/swBasisType/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "swBasisType",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#swTypeSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-                // 根据选中的三违依据初始化危险源
-                $.ajax({
-                    url: serverPath + "swEnter/basisHazard/" + select.val(),
-                    dataType: "jsonp",
-                    type: "post",
-                    jsonpCallback: "basisHazard",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            var select = $("#hazardSelect");
-                            select.val(data);
-                            select.selectmenu('refresh', true);
-                        }
-                    },
-                    error: function () {
-                        alert("error!");
-                    }
-                });
+ // 根据选中的三违依据初始化危险源
+ $.ajax({
+ url: serverPath + "swEnter/basisHazard/" + select.val(),
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "basisHazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-                var selectText = select.find("option:selected").text();
-                $("#swContent").val(selectText);
-            } else {
-                alert("没有数据！");
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ var selectText = select.find("option:selected").text();
+ $("#swContent").val(selectText);
+ } else {
+ alert("没有数据！");
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 查询危险源
-    $.ajax({
-        url: serverPath + "swEnter/hazard/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "hazard",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#hazardSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 查询危险源
+ $.ajax({
+ url: serverPath + "swEnter/hazard/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "hazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 查询排查地点
-    $.ajax({
-        url: serverPath + "swEnter/place/deptNumber/" + deptNumber,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "place",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#placeSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].placeid + "'>" + data[i].placename + "</option>";
+ // 查询排查地点
+ $.ajax({
+ url: serverPath + "swEnter/place/deptNumber/" + deptNumber,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "place",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#placeSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].placeid + "'>" + data[i].placename + "</option>";
 
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
-}
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
+ }*/
 
 /**
  * 根据选中的三违依据初始化三违性质、三违类型、危险源
  * @param selectVal 选中的三违依据
  */
-function selectBasis(selectVal) {
-//    alert(selectVal.options[selectVal.selectedIndex].text);
-    var selectText = selectVal.options[selectVal.selectedIndex].text;
+/*function selectBasis(selectVal) {
+ //    alert(selectVal.options[selectVal.selectedIndex].text);
+ var selectText = selectVal.options[selectVal.selectedIndex].text;
 
-    // 初始化三违性质
-    $.ajax({
-        url: serverPath + "swEnter/swBasisLevel/" + selectVal.value,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "swBasisLevel",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#swLevelSelect");
-                select.val(data);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 初始化三违性质
+ $.ajax({
+ url: serverPath + "swEnter/swBasisLevel/" + selectVal.value,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "swBasisLevel",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#swLevelSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 初始化三违类型
-    $.ajax({
-        url: serverPath + "swEnter/swBasisType/" + selectVal.value,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "swBasisType",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#swTypeSelect");
-                select.val(data);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 初始化三违类型
+ $.ajax({
+ url: serverPath + "swEnter/swBasisType/" + selectVal.value,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "swBasisType",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#swTypeSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    // 初始化危险源
-    $.ajax({
-        url: serverPath + "swEnter/basisHazard/" + selectVal.value,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "basisHazard",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#hazardSelect");
-                select.val(data);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
+ // 初始化危险源
+ $.ajax({
+ url: serverPath + "swEnter/basisHazard/" + selectVal.value,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "basisHazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.val(data);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
 
-    $("#swContent").val(selectText);
-}
+ $("#swContent").val(selectText);
+ }*/
 
 /**
  * 根据输入的过滤条件查询三违人员列表
  */
 function getSwry() {
-    /* var name = $("#querySwry").val();
-     if (name == undefined || name == null || name == "") {
-        alert("请输入人员姓名！");
-        return;
-    }
-
-    if (mainDeptId == undefined || mainDeptId == null || mainDeptId == "") {
-        alert("请先输入部门编码进行查询之后再录入三违数据！")
-    }
-
-    $.ajax({
-        url: serverPath + "swEnter/person/" + mainDeptId + "/" + name,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "person",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#swry");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].personnumber + "'>" + data[i].name + "</option>";
-
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-     });*/
-
     initDeptList();
 
     $.mobile.changePage("#swry-filter", {transition: "flip"});
@@ -498,9 +477,21 @@ function submitInfo() {
                 jsonpCallback: "insertInfo",
                 success: function (data) {
                     if (data == "success") {
-                        alert("录入成功！")
+//                        alert("录入成功！")
+                        $().toastmessage('showToast', {
+                            text: '录入成功！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'success'
+                        });
                     } else {
-                        alert("录入失败！");
+//                        alert("录入失败！");
+                        $().toastmessage('showToast', {
+                            text: '录入失败！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'error'
+                        });
                     }
                     $.mobile.loading("hide");
                     loading = false;
@@ -508,7 +499,13 @@ function submitInfo() {
                 error: function () {
                     $.mobile.loading("hide");
                     loading = false;
-                    alert("error!");
+//                    alert("error!");
+                    $().toastmessage('showToast', {
+                        text: '访问服务器错误！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
                 }
             });
         }
@@ -550,65 +547,14 @@ function filterSwyj() {
                     }
                     $(selectStr).appendTo(select);
                     select.selectmenu('refresh', true);
-
-                    /*// 根据选中的三违依据初始化三违性质
-                     $.ajax({
-                     url: serverPath + "swEnter/swBasisLevel/" + select.val(),
-                     dataType: "jsonp",
-                     type: "post",
-                     jsonpCallback: "swBasisLevel",
-                     success: function (data) {
-                     if (data != undefined && data != null && data.length > 0) {
-                     var select = $("#swLevelSelect");
-                     select.val(data);
-                     select.selectmenu('refresh', true);
-                     }
-                     },
-                     error: function () {
-                     alert("error!");
-                     }
-                     });
-
-                     // 根据选中的三违依据初始化三违类型
-                     $.ajax({
-                     url: serverPath + "swEnter/swBasisType/" + select.val(),
-                     dataType: "jsonp",
-                     type: "post",
-                     jsonpCallback: "swBasisType",
-                     success: function (data) {
-                     if (data != undefined && data != null && data.length > 0) {
-                     var select = $("#swTypeSelect");
-                     select.val(data);
-                     select.selectmenu('refresh', true);
-                     }
-                     },
-                     error: function () {
-                     alert("error!");
-                     }
-                     });
-
-                     // 根据选中的三违依据初始化危险源
-                     $.ajax({
-                     url: serverPath + "swEnter/basisHazard/" + select.val(),
-                     dataType: "jsonp",
-                     type: "post",
-                     jsonpCallback: "basisHazard",
-                     success: function (data) {
-                     if (data != undefined && data != null && data.length > 0) {
-                     var select = $("#hazardSelect");
-                     select.val(data);
-                     select.selectmenu('refresh', true);
-                     }
-                     },
-                     error: function () {
-                     alert("error!");
-                     }
-                     });
-
-                     var selectText = select.find("option:selected").text();
-                     $("#swContent").val(selectText);*/
                 } else {
-                    alert("没有三违依据数据！");
+//                    alert("没有三违依据数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有三违依据数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -617,7 +563,13 @@ function filterSwyj() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -627,35 +579,35 @@ function filterSwyj() {
 /**
  * 过滤危险源
  */
-function filterHazard() {
-    // 过滤条件
-    var arg = $("#hazardFilter").val();
-    if (arg == undefined || arg == null || arg == "") {
-        return;
-    }
+/*function filterHazard() {
+ // 过滤条件
+ var arg = $("#hazardFilter").val();
+ if (arg == undefined || arg == null || arg == "") {
+ return;
+ }
 
-    $.ajax({
-        url: serverPath + "swEnter/hazard/deptNumber/" + mainDeptId + "/" + arg,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "hazard",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                var select = $("#hazardSelect");
-                select.html("");
-                var selectStr = "";
-                for (var i = 0; i < data.length; i++) {
-                    selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
-                }
-                $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
-            }
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
-}
+ $.ajax({
+ url: serverPath + "swEnter/hazard/deptNumber/" + mainDeptId + "/" + arg,
+ dataType: "jsonp",
+ type: "post",
+ jsonpCallback: "hazard",
+ success: function (data) {
+ if (data != undefined && data != null && data.length > 0) {
+ var select = $("#hazardSelect");
+ select.html("");
+ var selectStr = "";
+ for (var i = 0; i < data.length; i++) {
+ selectStr += "<option value='" + data[i].hNumber + "'>" + data[i].hContent + "</option>";
+ }
+ $(selectStr).appendTo(select);
+ select.selectmenu('refresh', true);
+ }
+ },
+ error: function () {
+ alert("error!");
+ }
+ });
+ }*/
 
 /**
  * 过滤地点
@@ -695,7 +647,13 @@ function filterPlace() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -736,7 +694,13 @@ function returnSwyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -754,7 +718,13 @@ function returnSwyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -772,7 +742,13 @@ function returnSwyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -812,7 +788,13 @@ function filterWxy() {
                     select.selectmenu('refresh', true);
 
                 } else {
-                    alert("没有危险源数据！");
+//                    alert("没有危险源数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有危险源数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -821,8 +803,13 @@ function filterWxy() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
-
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -879,7 +866,13 @@ function filterSwry() {
                     select.selectmenu('refresh', true);
 
                 } else {
-                    alert("没有三违人员数据！");
+//                    alert("没有三违人员数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有三违人员数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -888,8 +881,13 @@ function filterSwry() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
-
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
