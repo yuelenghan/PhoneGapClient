@@ -143,116 +143,136 @@ function query() {
 
     var inputPersonId;
 
-    $.ajax({
-        url: serverPath + "yhEnter/pcPerson",
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "pcPerson",
-        success: function (data) {
-            if (data != undefined && data != null && data != "null") {
+    if (loading == false) {
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "yhEnter/pcPerson",
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "pcPerson",
+            success: function (data) {
+                if (data != undefined && data != null && data != "null") {
 //                alert(data.personNumber + "," + data.personName);
-                inputPersonId = data.personNumber;
+                    inputPersonId = data.personNumber;
 
-                if (target == "yh") {
-                    $.ajax({
-                        url: serverPath + "enterQuery/yhEnter/" + inputPersonId + "/" + banci + "/" + level + "/" + type,
-                        dataType: "jsonp",
-                        type: "post",
-                        jsonpCallback: "yhEnterQuery",
-                        success: function (data) {
-                            if (data != undefined && data != null && data.length > 0) {
-                                $.mobile.changePage("#yhResult");
-                                $("#yhEnterQuery-result tbody").html("");
+                    if (target == "yh") {
+                        $.ajax({
+                            url: serverPath + "enterQuery/yhEnter/" + inputPersonId + "/" + banci + "/" + level + "/" + type,
+                            dataType: "jsonp",
+                            type: "post",
+                            jsonpCallback: "yhEnterQuery",
+                            success: function (data) {
+                                if (data != undefined && data != null && data.length > 0) {
+                                    $.mobile.changePage("#yhResult");
+                                    $("#yhEnterQuery-result tbody").html("");
 
-                                for (var i = 0; i < data.length; i++) {
-                                    var tableStr = "<tr>";
-                                    tableStr += "<td>" + data[i].deptName + "</td>";
-                                    tableStr += "<td>" + data[i].yhContent + "</td>";
-                                    tableStr += "<td>" + data[i].inTime + "</td>";
-                                    tableStr += "</tr>";
+                                    for (var i = 0; i < data.length; i++) {
+                                        var tableStr = "<tr>";
+                                        tableStr += "<td>" + data[i].deptName + "</td>";
+                                        tableStr += "<td>" + data[i].yhContent + "</td>";
+                                        tableStr += "<td>" + data[i].inTime + "</td>";
+                                        tableStr += "</tr>";
 
-                                    $(tableStr).appendTo($("#yhEnterQuery-result tbody"));
+                                        $(tableStr).appendTo($("#yhEnterQuery-result tbody"));
+                                    }
+
+                                    $("#yhEnterQuery-result").table("refresh");
+                                } else {
+                                    $().toastmessage('showToast', {
+                                        text: '没有数据！',
+                                        sticky: false,
+                                        position: 'middle-center',
+                                        type: 'notice'
+                                    });
                                 }
 
-                                $("#yhEnterQuery-result").table("refresh");
-                            } else {
+                                loading = false;
+                                $.mobile.loading("hide");
+                            },
+                            error: function () {
+                                loading = false;
+                                $.mobile.loading("hide");
                                 $().toastmessage('showToast', {
-                                    text: '没有数据！',
+                                    text: '访问服务器错误！',
                                     sticky: false,
                                     position: 'middle-center',
-                                    type: 'notice'
+                                    type: 'error'
                                 });
                             }
-                        },
-                        error: function () {
-                            $().toastmessage('showToast', {
-                                text: '访问服务器错误！',
-                                sticky: false,
-                                position: 'middle-center',
-                                type: 'error'
-                            });
-                        }
-                    });
-                }
+                        });
+                    }
 
-                if (target == "sw") {
-                    $.ajax({
-                        url: serverPath + "enterQuery/swEnter/" + inputPersonId + "/" + banci + "/" + level + "/" + type,
-                        dataType: "jsonp",
-                        type: "post",
-                        jsonpCallback: "swEnterQuery",
-                        success: function (data) {
-                            if (data != undefined && data != null && data.length > 0) {
-                                $.mobile.changePage("#swResult");
-                                $("#swEnterQuery-result tbody").html("");
+                    if (target == "sw") {
+                        $.ajax({
+                            url: serverPath + "enterQuery/swEnter/" + inputPersonId + "/" + banci + "/" + level + "/" + type,
+                            dataType: "jsonp",
+                            type: "post",
+                            jsonpCallback: "swEnterQuery",
+                            success: function (data) {
+                                if (data != undefined && data != null && data.length > 0) {
+                                    $.mobile.changePage("#swResult");
+                                    $("#swEnterQuery-result tbody").html("");
 
-                                for (var i = 0; i < data.length; i++) {
-                                    var tableStr = "<tr>";
-                                    tableStr += "<td>" + data[i].swPerson + "</td>";
-                                    tableStr += "<td>" + data[i].swContent + "</td>";
-                                    tableStr += "<td>" + data[i].inTime + "</td>";
-                                    tableStr += "</tr>";
+                                    for (var i = 0; i < data.length; i++) {
+                                        var tableStr = "<tr>";
+                                        tableStr += "<td>" + data[i].swPerson + "</td>";
+                                        tableStr += "<td>" + data[i].swContent + "</td>";
+                                        tableStr += "<td>" + data[i].inTime + "</td>";
+                                        tableStr += "</tr>";
 
-                                    $(tableStr).appendTo($("#swEnterQuery-result tbody"));
+                                        $(tableStr).appendTo($("#swEnterQuery-result tbody"));
+                                    }
+
+                                    $("#swEnterQuery-result").table("refresh");
+                                } else {
+                                    $().toastmessage('showToast', {
+                                        text: '没有数据！',
+                                        sticky: false,
+                                        position: 'middle-center',
+                                        type: 'notice'
+                                    });
                                 }
 
-                                $("#swEnterQuery-result").table("refresh");
-                            } else {
+                                loading = false;
+                                $.mobile.loading("hide");
+                            },
+                            error: function () {
+                                loading = false;
+                                $.mobile.loading("hide");
                                 $().toastmessage('showToast', {
-                                    text: '没有数据！',
+                                    text: '访问服务器错误！',
                                     sticky: false,
                                     position: 'middle-center',
-                                    type: 'notice'
+                                    type: 'error'
                                 });
                             }
-                        },
-                        error: function () {
-                            $().toastmessage('showToast', {
-                                text: '访问服务器错误！',
-                                sticky: false,
-                                position: 'middle-center',
-                                type: 'error'
-                            });
-                        }
+                        });
+                    }
+                } else {
+                    loading = false;
+                    $.mobile.loading("hide");
+                    $().toastmessage('showToast', {
+                        text: '请重新登录！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
                     });
                 }
-            } else {
+            },
+            error: function () {
+                loading = false;
+                $.mobile.loading("hide");
                 $().toastmessage('showToast', {
-                    text: '请重新登录！',
+                    text: '访问服务器错误！',
                     sticky: false,
                     position: 'middle-center',
                     type: 'error'
                 });
             }
-        },
-        error: function () {
-            $().toastmessage('showToast', {
-                text: '访问服务器错误！',
-                sticky: false,
-                position: 'middle-center',
-                type: 'error'
-            });
-        }
-    });
+        });
+    }
+
 
 }

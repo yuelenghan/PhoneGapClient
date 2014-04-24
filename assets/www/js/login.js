@@ -46,20 +46,31 @@ function login() {
             url: serverPath + "user/login/userName/" + userName + "/password/" + password,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "login1",
             success: function (data) {
                 if (data == "success") {
 //                $.mobile.changePage("index2.html");
                     window.location.href = "index2.html";
                 } else {
-                    alert("登录失败！");
+                    $().toastmessage('showToast', {
+                        text: '登录失败！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
                 }
 
                 $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("登录失败！");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 $.mobile.loading("hide");
                 loading = false;
             }
