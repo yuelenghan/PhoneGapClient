@@ -1609,9 +1609,15 @@ function summaryScroll6PullUp() {
     if (loading == false) {
         pageNo++;
 
-        var date = $("#date-6").val();
-        if (date == undefined || date == null || date == "") {
-            alert("请输入日期！");
+        var startDate = $("#startDate-6").val();
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期！");
+            return;
+        }
+
+        var endDate = $("#endDate-6").val();
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入截止日期！");
             return;
         }
 
@@ -1628,7 +1634,7 @@ function summaryScroll6PullUp() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/kzdkyh/date/" + date + "/mine/" + mine + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/kzdkyh/startDate/" + startDate + "/endDate/" + endDate + "/mine/" + mine + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             timeout: 10000,

@@ -79,3 +79,36 @@ function login() {
 
 }
 
+function logout() {
+    if (confirm("确认退出？")) {
+        $.ajax({
+            url: serverPath + "user/logout",
+            dataType: "jsonp",
+            type: "post",
+            timeout: 10000,
+            jsonpCallback: "logout1",
+            success: function (data) {
+                if (data == "success") {
+                    $().toastmessage('showToast', {
+                        text: '成功退出！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'success'
+                    });
+
+                }
+                window.location.href = "index.html";
+            },
+            error: function () {
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
+            }
+        });
+    }
+
+}
+
