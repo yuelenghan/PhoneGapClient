@@ -60,6 +60,18 @@
             );
 
         }
+
+        function startMyActivity() {
+            window.plugins.webintent.myStartActivity({
+                        action: "android.intent.action.VIEW",
+                        url: 'http://10.1.168.50:8080/res/airimos_phone_android.apk'},
+                    function () {
+                    },
+                    function () {
+                        alert('出错！');
+                    }
+            );
+        }
     </script>
 </head>
 <body>
@@ -96,7 +108,7 @@
                 人员定位
             </div>
             <div class="ui-block-b" align="center">
-                <a id="button5" class="myButton" href="#" data-role="button" onclick="openAndroidActivity()"
+                <a id="button5" class="myButton" href="#" data-role="button" onclick="startMyActivity()"
                    style="background-image: url(logo/5.jpg)"></a>
                 视频监控
             </div>

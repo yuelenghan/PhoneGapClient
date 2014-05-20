@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
+import com.ghtn.PhoneGapClient.ResourceListActivity;
 import org.apache.cordova.DroidGap;
 import org.apache.cordova.api.Plugin;
 import org.apache.cordova.api.PluginResult;
@@ -65,6 +66,9 @@ public class WebIntent extends Plugin {
 
             } else if (action.equals("openApk")) {
                 openApk();
+                return new PluginResult(PluginResult.Status.OK);
+            } else if (action.equals("myStartActivity")) {
+                myStartActivity();
                 return new PluginResult(PluginResult.Status.OK);
             } else if (action.equals("hasExtra")) {
                 if (args.length() != 1) {
@@ -179,6 +183,11 @@ public class WebIntent extends Plugin {
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         ComponentName cn = new ComponentName("com.uniview.imos", "uniview.imos.ui.Load");
         intent.setComponent(cn);
+        ((DroidGap) this.cordova.getActivity()).startActivity(intent);
+    }
+
+    void myStartActivity() {
+        Intent intent = new Intent(cordova.getActivity(), ResourceListActivity.class);
         ((DroidGap) this.cordova.getActivity()).startActivity(intent);
     }
 

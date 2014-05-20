@@ -31,6 +31,14 @@
         }, 'WebIntent', 'openApk', [params]);
     };
 
+    WebIntent.prototype.myStartActivity = function (params, success, fail) {
+        return cordova.exec(function (args) {
+            success(args);
+        }, function (args) {
+            fail(args);
+        }, 'WebIntent', 'myStartActivity', [params]);
+    };
+
     WebIntent.prototype.hasExtra = function (params, success, fail) {
         return cordova.exec(function (args) {
             success(args);
