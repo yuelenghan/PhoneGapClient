@@ -22,6 +22,8 @@
     <script src="js/webintent.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+    var loading = false;
+
         $(function () {
             $.ajax({
                 url: serverPath + "yhEnter/pcPerson",
@@ -97,7 +99,7 @@
                 loading = true;
 
                 $.ajax({
-                    url: "http://10.1.168.50:8080/DataService/summary/zbdbld/date/" + curDate,
+                    url: "http://58.242.43.42:8010/DataService/summary/zbdbld/date/" + curDate,
                     dataType: "jsonp",
                     type: "post",
                     timeout: 10000,
@@ -186,7 +188,7 @@
                 loading = true;
 
                 $.ajax({
-                    url: "http://10.1.168.50:8080/DataService/aqgk/" + curDate,
+                    url: "http://58.242.43.42:8010/DataService/aqgk/" + curDate,
                     dataType: "jsonp",
                     type: "post",
                     timeout: 10000,

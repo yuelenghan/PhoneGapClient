@@ -4,7 +4,7 @@
 /**
  * 三违信息查询
  */
-var serverPath = "http://10.1.168.50:8080/DataService/";
+var serverPath = "http://58.242.43.42:8010/DataService/";
 var pageSize = 15, pageNo = 1;
 var swxcScroll;
 var loading = false;
@@ -216,16 +216,16 @@ function swxcPullUpAction() {
 
 function gotoSwxcDetail(item) {
     var url = "http://10.1.168.51/YSNewSearch/SwView.aspx?Swid=" + item.id;
-//    window.location.href = url;
+    window.location.href = url;
 //    window.open(url);
 
-    window.plugins.webintent.startActivity({
-            action: "android.intent.action.VIEW",
-            url: url},
-        function () {
-        },
-        function () {
-            alert('出错了！');
-        }
-    );
+    /* window.plugins.webintent.startActivity({
+     action: "android.intent.action.VIEW",
+     url: url},
+     function () {
+     },
+     function () {
+     alert('出错了！');
+     }
+     );*/
 }
