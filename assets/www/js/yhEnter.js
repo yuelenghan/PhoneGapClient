@@ -3,7 +3,6 @@
  * Created by Administrator on 2014/4/2.
  */
 
-var serverPath = "http://58.242.43.42:8010/DataService/";
 var mainDeptId, loading = false;
 
 /**
